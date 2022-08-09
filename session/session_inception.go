@@ -4407,7 +4407,7 @@ func (s *session) checkIndexAttr(tp ast.ConstraintType, name string,
 			s.appendErrorNo(ER_INDEX_NAME_UNIQ_PREFIX, name, s.inc.UniqIndexPrefix, table.Name)
 		}
 
-		s.checkDupIndex(table, name, keys)
+		s.checkDupColumnIndex(table, name, keys)
 	case ast.ConstraintSpatial:
 		if len(keys) > 1 {
 			s.appendErrorNo(ER_TOO_MANY_KEY_PARTS, name, table.Name, 1)
@@ -4425,7 +4425,7 @@ func (s *session) checkIndexAttr(tp ast.ConstraintType, name string,
 				s.appendErrorNo(ER_INDEX_NAME_IDX_PREFIX, name, s.inc.IndexPrefix, table.Name)
 			}
 		}
-		s.checkDupIndex(table, name, keys)
+		s.checkDupColumnIndex(table, name, keys)
 	}
 
 	if s.inc.MaxKeyParts > 0 && len(keys) > int(s.inc.MaxKeyParts) {
@@ -4435,7 +4435,7 @@ func (s *session) checkIndexAttr(tp ast.ConstraintType, name string,
 }
 
 /* 检查当前索引是否与已存在的索引存在字段重复, 比如(a,b) 与 (a)是存在重复的 */
-func (s *session) checkDupIndex(t *TableInfo, name string, keys []*ast.IndexColName) {
+func (s *session) checkDupColumnIndex(t *TableInfo, name string, keys []*ast.IndexColName) {
 	columns := ""
 	for _, c := range keys {
 		columns += c.Column.Name.String() + ","
