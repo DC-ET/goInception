@@ -788,6 +788,9 @@ func GetGlobalConfig() *Config {
 
 // Load loads config options from a toml file.
 func (c *Config) Load(confFile string) error {
+	// 默认值开启
+	c.Inc.EnableMinimalRollback = true
+
 	_, err := toml.DecodeFile(confFile, c)
 	if c.TokenLimit <= 0 {
 		c.TokenLimit = 1000
