@@ -231,7 +231,7 @@ var defaultLevel = IncLevel{
 	ErHaveBegin:                       2,
 	ErHostname:                        2,
 	ErIdIsUper:                        2,
-	ErIdentUseKeyword:                 1,
+	ErIdentUseKeyword:                 2,
 	ErIdentifierLower:                 2,
 	ErIdentifierUpper:                 2,
 	ErImplicitTypeConversion:          1,

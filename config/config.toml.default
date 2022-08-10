@@ -68,6 +68,9 @@ check_read_only = true
 # 是否检查字段存在多个索引，比如索引 (a,b) 与索引 (a) 中，a字段就是被重复索引的，应当只保留索引 (a,b)
 check_index_column_repeat = false
 
+# 关键字检测
+enable_identifer_keyword = false
+
 # 审核列类型变更
 check_column_type_change = true
 
@@ -264,7 +267,7 @@ er_foreign_key = 2
 er_have_begin = 2
 er_hostname = 2
 er_id_is_uper = 2
-er_ident_use_keyword = 1
+er_ident_use_keyword = 2
 er_identifier_lower = 2
 er_identifier_upper = 2
 er_implicit_type_conversion = 1

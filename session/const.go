@@ -840,4 +840,10 @@ var Keywords = map[string]bool{
 	"YEAR_MONTH":                      true,
 	"ZEROFILL":                        true,
 	"ZONE":                            true,
+
+	// 额外的自定义关键字（Sharding Proxy）
+	"MASTER_COMPRESSION_ALGORITHM": true,
+	"SKIP_SYMBOL":                  true,
+	"TIMESTAMP_ADD":                true,
+	"TIMESTAMP_DIFF":               true,
 }
