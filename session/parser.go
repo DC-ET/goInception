@@ -661,36 +661,18 @@ func (s *session) generateDeleteSql(t *TableInfo, e *replication.RowsEvent,
 
 		var vv []driver.Value
 		for i, d := range rows {
-			if t.hasPrimary {
-				_, ok := t.primarys[i]
-				if ok {
-					if t.Fields[i].isUnsigned() {
-						d = processValue(d, GetDataTypeBase(t.Fields[i].Type))
-					}
-					vv = append(vv, d)
-					if d == nil {
-						columnNames = append(columnNames,
-							fmt.Sprintf(c_null, t.Fields[i].Field))
-					} else {
-						columnNames = append(columnNames,
-							fmt.Sprintf(c, t.Fields[i].Field))
-					}
-				}
-			} else {
-				if t.Fields[i].isUnsigned() {
-					d = processValue(d, GetDataTypeBase(t.Fields[i].Type))
-				}
-				vv = append(vv, d)
-
-				if d == nil {
-					columnNames = append(columnNames,
-						fmt.Sprintf(c_null, t.Fields[i].Field))
-				} else {
-					columnNames = append(columnNames,
-						fmt.Sprintf(c, t.Fields[i].Field))
-				}
+			if t.Fields[i].isUnsigned() {
+				d = processValue(d, GetDataTypeBase(t.Fields[i].Type))
 			}
+			vv = append(vv, d)
 
+			if d == nil {
+				columnNames = append(columnNames,
+					fmt.Sprintf(c_null, t.Fields[i].Field))
+			} else {
+				columnNames = append(columnNames,
+					fmt.Sprintf(c, t.Fields[i].Field))
+			}
 		}
 		newSql := strings.Join([]string{sql, strings.Join(columnNames, " AND")}, "")
 
@@ -847,8 +829,11 @@ func (s *session) generateUpdateSql(t *TableInfo, e *replication.RowsEvent,
 							columnNames = append(columnNames,
 								fmt.Sprintf(c, t.Fields[j].Field))
 						}
+						continue
 					}
-				} else {
+				}
+				// 最小化模式下,列如果相等则省略
+				if !minimalMode || !compareValue(d, e.Rows[i-1][j]) {
 					if t.Fields[j].IsGenerated() {
 						continue
 					}
